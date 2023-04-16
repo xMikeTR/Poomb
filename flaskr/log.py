@@ -16,7 +16,7 @@ def index():
     exercise = db.execute(
         'SELECT * FROM log ORDER BY tday DESC'
     ).fetchall()
-    return render_template('log/index.html', exercise=exercise)
+    return render_template('log/index.html', exercises=exercise)
 
 @bp.route('/add', methods=('GET', 'POST'))
 @login_required
@@ -41,40 +41,22 @@ def add():
             db = get_db()
             for i in range(len(exercises)):
                 db.execute(
-                    'INSERT INTO log (tday, exercise, weight, sets, reps, creator_id)'
-                    'VALUES (?, ?, ?, ?, ?, ?)',
-                    (tday, exercises[i], weights[i], sets[i], reps[i], g.user['id'])
+                    'INSERT INTO log (tday, exercise, weight, sets, reps)'
+                    'VALUES (?, ?, ?, ?, ?)',
+                    (tday, exercises[i], weights[i], sets[i], reps[i])
                 )
             db.commit()
-            flash('Training added')
+            flash('Training')
         return redirect(url_for('log.index'))
         
     return render_template('log/add.html')
 
         
-def get_log(tday, check_user=True):
-    print("tday:", tday)
-    log = get_db().execute(
-        'SELECT id, tday, exercise, weight, sets, reps, creator_id'
-        ' FROM log '
-        ' WHERE tday = ?',
-        (tday,)
-    ).fetchone()
-    print("log:",log)
-    
-    if log is None:
-        abort(404,f"Log id {tday} doesn't exist.")
-        
-    if check_user and g.user['id'] == False:
-        abort(403)
-    print("g.user['id']:", g.user['id'])
-    return log
 
-@bp.route('/update', methods=('GET', 'POST'))
+
+@bp.route('/update/<string:tid>', methods=('GET', 'POST'))
 @login_required
-def update(tday):
-    print(tday)
-    log = get_log(tday, check_user=True)
+def update(tid):
     
     if request.method == 'POST':
         tday = request.form['tday']
@@ -91,21 +73,24 @@ def update(tday):
         else:
             db = get_db()
             db.execute(
-                'UPDATE log SET exercise = ?, weight = ?, sets = ?, reps = ?'
-                'WHERE tday = ? AND creator_id = ?',
+                'UPDATE log SET tday = ? exercise = ?, weight = ?, sets = ?, reps = ?'
+                'WHERE tid =?,',
                 (exercise, weight, sets, reps, g.user['id'])
             )
             db.commit()
             return redirect(url_for('log.index'))
+        db = get_db()
+        exercise = db.execute("SELECT * FROM  log WHERE TID=?",(tid,)
+                          ).fetchone
         
-        return render_template('log/update.html', logs = log, tdays=tday)
+        
+        return render_template('log/update.html', exercises=exercise)
 
-@bp.route('/<int:tday>/delete', methods=('POST',))
+@bp.route('/delete/<string:tid>', methods=('GET',))
 @login_required
-def delete(tday):
-    get_log(tday)
+def delete(tid):
     db = get_db()
-    db.execute('DELETE FROM log WHERE tday = ?', (tday,))
+    db.execute('DELETE FROM log WHERE tid = ?', (tid,))
     db.commit()
     return redirect(url_for('log.index'))
 

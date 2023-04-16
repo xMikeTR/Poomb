@@ -1,0 +1,13 @@
+html {
+  background: linear-gradient(to bottom, #000000, #808080);
+  height: 100%;
+}
+
+.custom-bg {
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+}
+
+table {
+  width: fit-content;
+}

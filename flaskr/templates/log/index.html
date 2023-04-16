@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>Recent Training</h1>
+{% endblock %}
+
+{% block content %}
+ {% for row in exercises %}
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Exercise</th>
+        <th scope="col">Weight</th>
+        <th scope="col">Sets</th>
+        <th scope="col">Reps</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ row.tday }}</td>
+        <td>{{ row.exercise }}</td>
+        <td>{{ row.weight }}</td>
+        <td>{{ row.sets }}</td>
+        <td>{{ row.reps }}</td>
+        <td><a href="{{ url_for('log.update',tid=tid)}}" class='btn btn-primary'>Edit</a></td>
+        <td><a href="{{ url_for('log.delete',tid=tid)}}" class='btn btn-primary' onclick='return confirm("Are you sure")'>Delete</a></td>
+      </tr>
+    </tbody>
+  </table> 
+ {% endfor %}
+{% endblock %}

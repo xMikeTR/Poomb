@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block header%}
+    <h1>{% block tittle%}Edit{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{{ url_for('log.update', tid=datas.tid) }}">
+        <label>Date:</label>
+        <input type="date" name="date" required><br><br>
+
+        <label>Exercise Name:</label>
+        <input type="text" name="exercise" required><br><br>
+
+        <label>Weight Lifted:</label>
+        <input type="number" name="weight" required><br><br>
+
+        <label>Sets:</label>
+        <input type="number" name="sets" required><br><br>
+
+        <label>Reps:</label>
+        <input type="number" name="reps" required><br><br>
+
+        <div id="exercises"></div>
+        <button type="button" onclick="addExercise()">Add Exercise</button><br><br>
+
+        <input type="submit" value="Save">
+    </form>
+    <hr>
+    <form action="{{ url_for('log.delete', tday=log['tday']) }}" method="post">
+        <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+      </form>
+{% endblock %}

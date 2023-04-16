@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block header%}
+    <h1>Add Training</h1>
+{% endblock %}
+{% block content %}
+    <form action="/add" method="post">
+        <label>Training Day:</label>
+        <input type="date" name="tday" required><br><br>
+
+        <label>Exercise Name:</label>
+        <input type="text" name="exercise" required><br><br>
+
+        <label>Weight Lifted:</label>
+        <input type="number" name="weight" required><br><br>
+
+        <label>Sets:</label>
+        <input type="number" name="sets" required><br><br>
+
+        <label>Reps:</label>
+        <input type="number" name="reps" required><br><br>
+
+        <div id="exercises"></div>
+        <button type="button" onclick="addExercise()">Add Exercise</button><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        function addExercise() {
+            var div = document.createElement('div');
+            div.innerHTML = '<label>Exercise Name:</label><input type="text" name="exercise" required><br><br><label>Weight Lifted:</label><input type="number" name="weight" required><br><br><label>Sets:</label><input type="number" name="sets" required><br><br><label>Reps:</label><input type="number" name="reps" required><br><br>';
+            document.getElementById('exercises').appendChild(div);
+        }
+    </script>
+{% endblock %}
