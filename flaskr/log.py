@@ -54,7 +54,7 @@ def add():
         
 
 
-@bp.route('/update/<string:tid>', methods=('GET', 'POST'))
+@bp.route('/update/<int:tid>', methods=('GET', 'POST'))
 @login_required
 def update(tid):
     
@@ -86,7 +86,7 @@ def update(tid):
         
         return render_template('log/update.html', exercises=exercise)
 
-@bp.route('/delete/<string:tid>', methods=('GET',))
+@bp.route('/delete/<int:tid>', methods=('GET',))
 @login_required
 def delete(tid):
     db = get_db()
