@@ -13,24 +13,26 @@ bp = Blueprint('log', __name__)
 @login_required
 def index():
     db = get_db()
-    exercise = db.execute(
-        'SELECT * FROM log ORDER BY tday DESC'
+    max_tday = db.execute('SELECT MAX(tday) FROM log').fetchone()[0]
+    exercises = db.execute(
+        'SELECT * FROM log WHERE tday = ?',
+        (max_tday,)
     ).fetchall()
-    return render_template('log/index.html', exercises=exercise)
+    return render_template('log/index.html', exercises=exercises, tday=max_tday)
 
 @bp.route('/add', methods=('GET', 'POST'))
 @login_required
 def add():
     if request.method == 'POST':
         tday = request.form['tday']
-        exercises = request.form.getlist('exercise')
+        exercise = request.form.getlist('exercise')
         weights = request.form.getlist('weight')
         sets = request.form.getlist('sets')
         reps = request.form.getlist('reps')
         error = None
         
-        for i in range(len(exercises)):
-            if not exercises[i]:
+        for i in range(len(exercise)):
+            if not exercise[i]:
                 error = 'Exercise is required for all entries.'
                 break
         
@@ -39,11 +41,11 @@ def add():
         
         else:
             db = get_db()
-            for i in range(len(exercises)):
+            for i in range(len(exercise)):
                 db.execute(
                     'INSERT INTO log (tday, exercise, weight, sets, reps)'
                     'VALUES (?, ?, ?, ?, ?)',
-                    (tday, exercises[i], weights[i], sets[i], reps[i])
+                    (tday, exercise[i], weights[i], sets[i], reps[i])
                 )
             db.commit()
             flash('Training')
@@ -53,28 +55,24 @@ def add():
 
         
 
-
-@bp.route('/update/<string:tid>', methods=('GET', 'POST'))
+@bp.route('/update/<int:tid>', methods=('GET', 'POST'))
 @login_required
 def update(tid):
-    
+    print("tid:", tid)
     if request.method == 'POST':
-        tday = request.form['tday']
         exercise = request.form['exercise']
         weight = request.form['weight']
         sets = request.form['sets']
         reps = request.form['reps']
         error = None
         
-        if not tday:
-            error = 'Training day is required.'
         if error is not None:
             flash(error)
         else:
             db = get_db()
             db.execute(
-                'UPDATE log SET tday = ? exercise = ?, weight = ?, sets = ?, reps = ?'
-                'WHERE tid =?,',
+                'UPDATE log SET exercise = ?, weight = ?, sets = ?, reps = ?'
+                'WHERE tid =?',
                 (exercise, weight, sets, reps, g.user['id'])
             )
             db.commit()
@@ -84,9 +82,9 @@ def update(tid):
                           ).fetchone
         
         
-        return render_template('log/update.html', exercises=exercise)
+    return render_template('log/update.html', tid=tid)
 
-@bp.route('/delete/<string:tid>', methods=('GET',))
+@bp.route('/delete/<int:tid>', methods=('GET',))
 @login_required
 def delete(tid):
     db = get_db()

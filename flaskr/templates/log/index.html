@@ -23,8 +23,8 @@
         <td>{{ row.weight }}</td>
         <td>{{ row.sets }}</td>
         <td>{{ row.reps }}</td>
-        <td><a href="{{ url_for('log.update',tid=tid)}}" class='btn btn-primary'>Edit</a></td>
-        <td><a href="{{ url_for('log.delete',tid=tid)}}" class='btn btn-primary' onclick='return confirm("Are you sure")'>Delete</a></td>
+        <td><a href="{{ url_for('log.update', tid=row.tid) }}" class='btn btn-primary'>Edit</a></td>
+        <td><a href="{{ url_for('log.delete', tid=row.tid) }}" class='btn btn-primary' onclick='return confirm("Are you sure")'>Delete</a></td>
       </tr>
     </tbody>
   </table> 

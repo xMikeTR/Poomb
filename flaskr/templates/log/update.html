@@ -5,10 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<form method="post" action="{{ url_for('log.update', tid=datas.tid) }}">
-        <label>Date:</label>
-        <input type="date" name="date" required><br><br>
-
+<form method="post" action="{{ url_for('log.update', tid=tid) }}">
         <label>Exercise Name:</label>
         <input type="text" name="exercise" required><br><br>
 
@@ -20,9 +17,6 @@
 
         <label>Reps:</label>
         <input type="number" name="reps" required><br><br>
-
-        <div id="exercises"></div>
-        <button type="button" onclick="addExercise()">Add Exercise</button><br><br>
 
         <input type="submit" value="Save">
     </form>
