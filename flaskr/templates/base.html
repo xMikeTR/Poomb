@@ -3,40 +3,103 @@
   <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
   <title>{% block title %}{% endblock %}Poomb</title>
   </head>
-  <body class="custom-bg">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Poomb</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Training
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <li><a class="dropdown-item" href="{{ url_for('log.add') }}">Add</a></li>
-                
-                <li><a class="dropdown-item" href="#">Performance</a></li>
-                
-                <li><a class="dropdown-item" href="#">TBA</a></li>
-                
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">TBA</a>
-            </li>
-          </ul>
+  <body>
+    <nav class="navbar">
+      <ul class="navbar-nav">
+        <li class="logo">
+          <a href="#" class="nav-link">
+            <span class="link-text logo-text">Poomb</span>
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fad"
+              data-icon="angle-double-right"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              class="svg-inline--fa fa-solid fa-burst"
+            >
+              <g class="fa-group">
+                <path
+                  fill="currentColor"
+                  d="M37.6 4.2C28-2.3 15.2-1.1 7 7s-9.4 21-2.8 30.5l112 163.3L16.6 233.2C6.7 236.4 0 245.6 0 256s6.7 19.6 16.6 22.8l103.1 33.4L66.8 412.8c-4.9 9.3-3.2 20.7 4.3 28.1s18.8 9.2 28.1 4.3l100.6-52.9 33.4 103.1c3.2 9.9 12.4 16.6 22.8 16.6s19.6-6.7 22.8-16.6l33.4-103.1 100.6 52.9c9.3 4.9 20.7 3.2 28.1-4.3s9.2-18.8 4.3-28.1L392.3 312.2l103.1-33.4c9.9-3.2 16.6-12.4 16.6-22.8s-6.7-19.6-16.6-22.8L388.9 198.7l25.7-70.4c3.2-8.8 1-18.6-5.6-25.2s-16.4-8.8-25.2-5.6l-70.4 25.7L278.8 16.6C275.6 6.7 266.4 0 256 0s-19.6 6.7-22.8 16.6l-32.3 99.6L37.6 4.2z"
+                  class="fa-secondary"
+                ></path>
+                <path
+                  fill="currentColor"
+                  d="M37.6 4.2C28-2.3 15.2-1.1 7 7s-9.4 21-2.8 30.5l112 163.3L16.6 233.2C6.7 236.4 0 245.6 0 256s6.7 19.6 16.6 22.8l103.1 33.4L66.8 412.8c-4.9 9.3-3.2 20.7 4.3 28.1s18.8 9.2 28.1 4.3l100.6-52.9 33.4 103.1c3.2 9.9 12.4 16.6 22.8 16.6s19.6-6.7 22.8-16.6l33.4-103.1 100.6 52.9c9.3 4.9 20.7 3.2 28.1-4.3s9.2-18.8 4.3-28.1L392.3 312.2l103.1-33.4c9.9-3.2 16.6-12.4 16.6-22.8s-6.7-19.6-16.6-22.8L388.9 198.7l25.7-70.4c3.2-8.8 1-18.6-5.6-25.2s-16.4-8.8-25.2-5.6l-70.4 25.7L278.8 16.6C275.6 6.7 266.4 0 256 0s-19.6 6.7-22.8 16.6l-32.3 99.6L37.6 4.2z"
+                  class="fa-primary"
+                ></path>
+              </g>
+            </svg>
+          </a>
+        </li>
+  
+        <li class="nav-item">
+          <a href="/" class="nav-link">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fad"
+              data-icon="house"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 576 512"
+              class="svg-inline--fa-solid fa-house"
+            >
+              <g class="fa-group">
+                <path
+                  fill="currentColor"
+                  d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"
+                  class="fa-secondary"
+                ></path>
+                <path
+                  fill="currentColor"
+                  d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"
+                  class="fa-primary"
+                ></path>
+              </g>
+            </svg>
+            <span class="link-text">Home</span>
+          </a>
+        </li>
+  
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fad"
+              data-icon="dumbbell"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 640 512"
+              class="svg-inline--fa fa-solid fa-dumbbell"
+            >
+              <g class="fa-group">
+                <path
+                  fill="currentColor"
+                  d="M96 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32V224v64V448c0 17.7-14.3 32-32 32H128c-17.7 0-32-14.3-32-32V384H64c-17.7 0-32-14.3-32-32V288c-17.7 0-32-14.3-32-32s14.3-32 32-32V160c0-17.7 14.3-32 32-32H96V64zm448 0v64h32c17.7 0 32 14.3 32 32v64c17.7 0 32 14.3 32 32s-14.3 32-32 32v64c0 17.7-14.3 32-32 32H544v64c0 17.7-14.3 32-32 32H480c-17.7 0-32-14.3-32-32V288 224 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32zM416 224v64H224V224H416z"
+                  class="fa-secondary"
+                ></path>
+                <path
+                  fill="currentColor"
+                  d="M96 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32V224v64V448c0 17.7-14.3 32-32 32H128c-17.7 0-32-14.3-32-32V384H64c-17.7 0-32-14.3-32-32V288c-17.7 0-32-14.3-32-32s14.3-32 32-32V160c0-17.7 14.3-32 32-32H96V64zm448 0v64h32c17.7 0 32 14.3 32 32v64c17.7 0 32 14.3 32 32s-14.3 32-32 32v64c0 17.7-14.3 32-32 32H544v64c0 17.7-14.3 32-32 32H480c-17.7 0-32-14.3-32-32V288 224 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32zM416 224v64H224V224H416z"
+                  class="fa-primary"
+                ></path>
+              </g>
+            </svg>
+            <span class="link-text">Performance</span>
+          </a>
+        </li>
+        <li>
           {% if g.user %}
             <div class="ms-auto">
               <ul class="navbar-nav">
@@ -51,9 +114,9 @@
               </ul>
             </div>
           {% endif %}
-        </div>
-      </div>
-    </nav>
+          </li>
+        </ul>
+      </nav>
     <section class="content">
       <header>
         {% block header %}{% endblock %}
@@ -63,6 +126,5 @@
       {% endfor %}
       {% block content %}{% endblock %}
     </section>
-    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
   </body>  
 </html>
