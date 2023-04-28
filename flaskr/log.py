@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 import plotly.graph_objs as go
 
+
 bp = Blueprint('log', __name__)
 
 @bp.route('/')
