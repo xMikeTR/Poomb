@@ -5,11 +5,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="table-container">
-    <table class="exercise-table">
+<div class="grid">
+    <table>
       <thead>
-        <tr>
+        <tr label="Recent Training">
           <th scope="col">Date</th>
           <th scope="col">Exercise</th>
           <th scope="col">Weight</th>
@@ -33,9 +32,5 @@
         {% endfor %}
       </tbody>
     </table>
-  </div>
-  <div class="other-container">
-    <!-- content for the other container goes here -->
-  </div>
 </div>
 {% endblock %}

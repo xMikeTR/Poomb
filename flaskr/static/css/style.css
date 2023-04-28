@@ -186,6 +186,7 @@ main {
 table {
   border-collapse: collapse;
   width: 100%;
+  margin-top: 80px;
 }
 
 /* Add borders to table cells */
@@ -231,16 +232,9 @@ tr:hover {
   background-color: #f44336;
 }
 
-.container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.table-container {
-  flex-basis: 75%;
-}
-
-.other-container {
-  flex-basis: 25%;
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 500px 1fr;
+  grid-template-rows: 100px 200px;
+  place-items: center;
 }

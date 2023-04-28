@@ -5,7 +5,7 @@ from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
-import datetime
+from datetime import datetime
 
 bp = Blueprint('log', __name__)
 
@@ -24,7 +24,7 @@ def index():
 @login_required
 def add():
     if request.method == 'POST':
-        tday = request.form['tday']
+        tday = datetime.strptime(request.form['tday'], '%Y-%m-%d').strftime('%d-%m-%Y')
         exercise = request.form.getlist('exercise')
         weights = request.form.getlist('weight')
         sets = request.form.getlist('sets')
@@ -92,3 +92,21 @@ def delete(tid):
     db.commit()
     return redirect(url_for('log.index'))
 
+
+@bp.route('/performance', methods=('GET', 'POST'))
+@login_required
+def performance():
+    if request.method == 'POST':
+        tdate = request.form['tdate']
+        tdate_obj = datetime.strptime(tdate, '%Y-%m-%d')
+        tdate_formatted = tdate_obj.strftime('%d-%m-%Y')
+    
+        db = get_db()
+        tperformance = db.execute('SELECT * FROM log WHERE tday = ?', (tdate_formatted,)).fetchall()
+        
+        if len(tperformance) == 0:
+            flash("No data for selected date.")
+        
+        return render_template('log/performance.html',tperformance=tperformance)
+    
+    return render_template('log/performance.html')
