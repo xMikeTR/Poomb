@@ -1,29 +1,39 @@
-var ctx = document.getElementById('analytics');
-var chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-              datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                borderWidth: 1
-              }]
-            },
-            options: {
-              scales: {
-                y: {
-                  beginAtZero: true
-                }
+$(document).ready(function() {
+  $.ajax({
+      url: "/api/trdata",
+      type: "GET",
+      success: function(response) {
+          // Extract data from the API response
+          var labels = response.labels;
+          var datasets = response.datasets;
+
+          // Prepare data for the chart
+          var chartData = {
+              labels: labels,
+              datasets: datasets
+          };
+
+          // Create the line chart
+          var ctx = document.getElementById('analytics').getContext('2d');
+          var lineChart = new Chart(ctx, {
+              type: 'line',
+              data: chartData,
+              options: {
+                  responsive: true,
+                  plugins: {
+                    legend: {
+                      position: 'top',
+                    },
+                    title : {
+                      display: true,
+                      text: 'Training Progression'
+                    }
+                  }
               }
-            }
           });
-    async function getData() {
-        const apiUrl = "@api/data"
-
-        const response = await fetch(apiUrl)
-        const lineChartData = await response.json()
-
-        HTMLFormControlsCollection.log(lineChartData)
-    }
-
-    getData()
+      },
+      error: function(error) {
+          console.log(error);
+      }
+  });
+});

@@ -24,7 +24,7 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #6649b8;
+  background: #8a3f3f;
 }
 
 main {
@@ -234,7 +234,7 @@ tr:hover {
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 500px 1fr;
-  grid-template-rows: 100px 200px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-auto-rows: 240px;
   place-items: center;
 }
