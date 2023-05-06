@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="static/js/analytics.js"></script>
   <h1>Select a date:</h1>
   <form method="POST" action="{{ url_for('log.performance') }}">
     <div class="form-group">
@@ -38,8 +40,8 @@
           </tbody>
         </table>
       {% endif %}
-      <div style="width: 800px;"><canvas id="analytics"></canvas></div>
+      <div><canvas id="analytics"></canvas></div>
     </div>
 
-    <script src="js/analytics.js"></script>
+    
 {% endblock %}

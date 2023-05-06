@@ -113,3 +113,4 @@ def performance():
         return render_template('log/performance.html',tperformance=tperformance)
     
     return render_template('log/performance.html')
+
