@@ -1,12 +1,27 @@
-from flask import Blueprint
-from flask_restx import Api, Resource
+import asyncio
+from pyppeteer import launch
 from bs4 import BeautifulSoup
-import requests
+import nest_asyncio
+import asyncio
+from pyppeteer import launch
+nest_asyncio.apply()
 
 
 
-bp = Blueprint('api', __name__)
-wtlfcal = Api(bp)
+async def main():
+    browser = await launch(headless=True)
+    page = await browser.newPage()
+    post_url = 'https://www.instagram.com/p/COmlv7iLHlG/'
 
-# use pypi insta-scraper and facebook scraper to look through wpc posts and grab data
-#seek keywords and print it in Json, display through AJAX
+    await page.goto(post_url,)
+    await page.waitForSelector('img[alt]')
+
+    html = await page.content()
+    soup = BeautifulSoup(html, 'html.parser')
+    img_tag = soup.find('img')
+    post_text = img_tag['alt']
+
+
+
+response = asyncio.get_event_loop().run_until_complete(main())
+print(response)
