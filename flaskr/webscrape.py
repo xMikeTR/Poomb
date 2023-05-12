@@ -1,14 +1,12 @@
 import asyncio
 from pyppeteer import launch
 from bs4 import BeautifulSoup
-import nest_asyncio
-import asyncio
-from pyppeteer import launch
 from PIL import Image
 import pytesseract
-nest_asyncio.apply()
-
-
+import base64
+from io import BytesIO
+import nest_asyncio
+nest_asyncio.apply() 
 
 async def extract_image_text(url):
     browser = await launch(headless=True)
@@ -17,7 +15,7 @@ async def extract_image_text(url):
     await page.goto(url)
     await page.waitForSelector('.wp-image-5559')
 
-    image_data = await page.evaluate('(async () => {'
+    image_data = await page.evaluate('() => {'
                                     '  const image = document.querySelector(".wp-image-5559");'
                                     '  const canvas = document.createElement("canvas");'
                                     '  const context = canvas.getContext("2d");'
@@ -25,12 +23,16 @@ async def extract_image_text(url):
                                     '  canvas.height = image.height;'
                                     '  context.drawImage(image, 0, 0, image.width, image.height);'
                                     '  return canvas.toDataURL();'
-                                    '})()')
+                                    '}')
 
     await browser.close()
+    
+    tessdata_dir_config = '--tessdata-dir "<C:\Program Files\Tesseract-OCR\tessdata>"'
+    tesseract_cmd = r'<C:\Program Files\Tesseract-OCR\tesseract.exe>'
+    pytesseract.pytesseract.tesseract_cmd = tesseract_cmd
 
     image = Image.open(BytesIO(base64.b64decode(image_data.split(',')[1])))
-    text = pytesseract.image_to_string(image)
+    text = pytesseract.image_to_string(image, config=tessdata_dir_config)
 
     return text
 
