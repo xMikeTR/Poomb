@@ -3,18 +3,7 @@
 {% block header %}
   <h1>Recent Training</h1>
   <a href="{{ url_for('log.add') }}" class='btn btn-primary'>Add</a>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $.ajax({
-                url: '/webscrape/wbscrape',
-                type: 'GET',
-                success: function(response) {
-                    $('#truncated-text').text(response.truncated_text);
-                }
-            });
-        });
-    </script>
+  
 {% endblock %}
 
 {% block content %}
