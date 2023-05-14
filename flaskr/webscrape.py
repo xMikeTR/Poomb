@@ -1,10 +1,11 @@
 import asyncio
-from flask import Flask, render_template, jsonify
-from flask_restx import Resource, Api
+from flask import Flask, jsonify
+from flask_restx import Api, Resource, fields
 from pyppeteer import launch
 from bs4 import BeautifulSoup
 from flask import Blueprint
 import nest_asyncio
+import json
 
 nest_asyncio.apply()
 
@@ -12,25 +13,36 @@ nest_asyncio.apply()
 bp = Blueprint('wbscrape', __name__)
 scrape = Api(bp)
 
+async def main():
+    browserObj = await launch({"headless": True})
+    page = await browserObj.newPage()
+    await page.goto('https://www.openpowerlifting.org/mlist/all-portugal/2023')
 
-@bp.route('/wbscrape')
-class ScrapeResource(Resource):
-    def get(self):
-        url = 'https://powerexpoportugal.com/'
-        page_text = asyncio.get_event_loop().run_until_complete(get_page_text(url))
-        truncated_text = page_text[:500] + '...' if len(page_text) > 500 else page_text
-        return jsonify({'truncated_text': truncated_text})
-    
-    
-async def get_page_text(url):
-    browser = await launch()
-    page = await browser.newPage()
-    await page.goto(url)
-    await page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
-    await asyncio.sleep(3) # Wait for page to load completely
-    html = await page.content()
-    soup = BeautifulSoup(html, 'html.parser')
-    page_text = soup.get_text()
-    await browser.close()
-    return page_text
-    
+    data = []
+    rows = await page.querySelectorAll("tbody tr")
+
+    for row in rows:
+        columns = await row.querySelectorAll("td")
+        row_data = {}
+
+        for index, column in enumerate(columns):
+            column_header = await page.querySelector(f"thead th:nth-child({index + 1})")
+            header_value = await column_header.getProperty("textContent")
+            header_value = await header_value.jsonValue()
+
+            column_value = await column.getProperty("textContent")
+            column_value = await column_value.jsonValue()
+
+            row_data[header_value] = column_value
+
+        data.append(row_data)
+
+    await browserObj.close()
+    return data
+
+async def run():
+    extracted_data = await main()
+    json_data = json.dumps(extracted_data, indent=2)
+    print(json_data)
+
+asyncio.get_event_loop().run_until_complete(run())
