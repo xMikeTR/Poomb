@@ -8,6 +8,13 @@ from flaskr.db import get_db
 from datetime import datetime, timedelta
 import pandas as pd
 import plotly.graph_objs as go
+import nest_asyncio
+import json
+import asyncio
+from flask import jsonify
+
+
+nest_asyncio.apply()
 
 
 bp = Blueprint('log', __name__)

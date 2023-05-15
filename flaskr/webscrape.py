@@ -6,43 +6,51 @@ from bs4 import BeautifulSoup
 from flask import Blueprint
 import nest_asyncio
 import json
+from flask import Blueprint
 
 nest_asyncio.apply()
 
 
-bp = Blueprint('wbscrape', __name__)
-scrape = Api(bp)
+wbscrape = Blueprint('scrape', __name__)
+scrape = Api(wbscrape)
 
-async def main():
-    browserObj = await launch({"headless": True})
-    page = await browserObj.newPage()
-    await page.goto('https://www.openpowerlifting.org/mlist/all-portugal/2023')
+@scrape.route('/events')
+class Scraping(Resource):
+    def get(self):
+        async def main():
+            browserObj = await launch({"headless": True})
+            page = await browserObj.newPage()
+            await page.goto('https://www.openpowerlifting.org/mlist/all-portugal/2023')
 
-    data = []
-    rows = await page.querySelectorAll("tbody tr")
+            data = []
+            rows = await page.querySelectorAll("tbody tr")
 
-    for row in rows:
-        columns = await row.querySelectorAll("td")
-        row_data = {}
+            for row in rows:
+                columns = await row.querySelectorAll("td")
+                row_data = {}
 
-        for index, column in enumerate(columns):
-            column_header = await page.querySelector(f"thead th:nth-child({index + 1})")
-            header_value = await column_header.getProperty("textContent")
-            header_value = await header_value.jsonValue()
+                for index, column in enumerate(columns):
+                    column_header = await page.querySelector(f"thead th:nth-child({index + 1})")
+                    header_value = await column_header.getProperty("textContent")
+                    header_value = await header_value.jsonValue()
 
-            column_value = await column.getProperty("textContent")
-            column_value = await column_value.jsonValue()
+                    column_value = await column.getProperty("textContent")
+                    column_value = await column_value.jsonValue()
 
-            row_data[header_value] = column_value
+                    row_data[header_value] = column_value
 
-        data.append(row_data)
+                data.append(row_data)
 
-    await browserObj.close()
-    return data
+            await browserObj.close()
+            return data
 
-async def run():
-    extracted_data = await main()
-    json_data = json.dumps(extracted_data, indent=2)
-    print(json_data)
+        async def scrape_data():
+            extracted_data = await main()
+            return extracted_data
 
-asyncio.get_event_loop().run_until_complete(run())
+        async def run():
+            extracted_data = await scrape_data()
+            json_data = json.dumps(extracted_data, indent=2)
+            return json_data
+        
+

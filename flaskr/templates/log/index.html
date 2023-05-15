@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 
 {% block header %}
+<script>
+  // Get the extracted data from the Flask context
+  var extractedData = {{ extracted_data|safe }};
+
+  // Update the placeholder element with the extracted data
+  var extractedDataElement = document.getElementById('extracted-data');
+  extractedDataElement.textContent = JSON.stringify(extractedData);
+</script>
   <h1>Recent Training</h1>
   <a href="{{ url_for('log.add') }}" class='btn btn-primary'>Add</a>
   
@@ -32,10 +40,32 @@
             </td>
           </tr>
         {% endfor %}
-        <div>
-          <p id="truncated_text"></p>
-        </div>
+        <div id="extracted-data"><div>
       </tbody>
+      <script>
+        fetch('/scrape/events')
+            .then(response => response.json())
+            .then(data => {
+                // Manipulate and display the scraped data
+                const eventData = document.getElementById('event-data');
+                data.forEach(event => {
+                    const eventCard = document.createElement('div');
+                    eventCard.className = 'card';
+
+                    const title = document.createElement('h2');
+                    title.textContent = event.title;
+                    eventCard.appendChild(title);
+
+                    const comps = document.createElement('p');
+                    comps.textContent = event.comps;
+                    eventCard.appendChild(comps);
+
+                    eventData.appendChild(eventCard);
+                });
+            });
+    </script>
+    <h1>Recent Events</h1>
+    <div id="event-data"></div>
     </table>
 </div>
 {% endblock %}
