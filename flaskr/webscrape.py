@@ -42,15 +42,11 @@ class Scraping(Resource):
                 data.append(row_data)
 
             await browserObj.close()
-            return data
-
-        async def scrape_data():
+            
             extracted_data = await main()
-            return extracted_data
-
-        async def run():
-            extracted_data = await scrape_data()
             json_data = json.dumps(extracted_data, indent=2)
             return json_data
+        
+        asyncio.get_event_loop().run_until_complete(main())
         
 
