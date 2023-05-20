@@ -39,7 +39,8 @@ def create_app(test_config=None):
     from . import api
     app.register_blueprint(api.bp, url_prefix='/api')
     
-    
+    from . import webscrape
+    app.register_blueprint(webscrape.bp, url_prefix='/api')
 
 
     return app
