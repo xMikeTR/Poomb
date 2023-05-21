@@ -18,7 +18,7 @@ api = Api(bp)
 class WbsScrape(Resource):
     def get(self):
         async def main():
-            browserObj = await launch({"headless": True}, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False)
+            browserObj = await launch({"headless": True}, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False, ignoreHTTPSErrors=True)
             page = await browserObj.newPage()
             await page.goto('https://www.openpowerlifting.org/mlist/all-portugal/2023')
 
@@ -44,10 +44,13 @@ class WbsScrape(Resource):
             await browserObj.close()
             return data
             
+            
+            
 
         async def run():
             extracted_data = await main()
             return(extracted_data)
+        
 
         
         extracted_data = asyncio.run(run())
