@@ -7,6 +7,7 @@ from flask import Blueprint
 import nest_asyncio
 import json
 from flask import Blueprint
+from flaskr.db import get_db
 
 nest_asyncio.apply()
 
@@ -51,8 +52,17 @@ class WbsScrape(Resource):
             extracted_data = await main()
             return(extracted_data)
         
-
+        db = get_db()
+        result = db.execute("SELECT country FROM users WHERE id = ?", (user_id)).fetchone()
         
-        extracted_data = asyncio.run(run())
-        return jsonify({'data': extracted_data})
+        if result:
+            country = result[0]
+            url = f'https://www.openpowerlifting.org/mlist/all-{country}/2023'
+            extracted_data = asyncio.run(run(url))
+            return jsonify({'data': extracted_data})
+        else:
+            return jsonify({'error': 'User not found'}) 
+        
+        
+        
 
