@@ -1,5 +1,5 @@
 import asyncio
-from flask import Flask, jsonify
+from flask import Flask, jsonify, session, request, g
 from flask_restx import Api, Resource, fields
 from pyppeteer import launch
 from bs4 import BeautifulSoup
@@ -14,6 +14,10 @@ nest_asyncio.apply()
 
 bp = Blueprint('webscrape', __name__)
 api = Api(bp)
+
+@api.before_request
+def before_request():
+    g.user = session.get('user')
 
 @api.route('/webscrape')
 class WbsScrape(Resource):
@@ -51,9 +55,10 @@ class WbsScrape(Resource):
         async def run():
             extracted_data = await main()
             return(extracted_data)
-        
-        db = get_db()
-        result = db.execute("SELECT country FROM users WHERE id = ?", (user_id)).fetchone()
+        if g.user and 'id' in g.user:
+            user_id = g.user['id']
+            db = get_db()
+            result = db.execute("SELECT country FROM users WHERE id = ?", (user_id)).fetchone()
         
         if result:
             country = result[0]
