@@ -7,7 +7,7 @@ from flask import Blueprint
 import nest_asyncio
 import json
 from flask import Blueprint
-from flaskr.db import get_db
+from poomb.db import get_db
 
 nest_asyncio.apply()
 
