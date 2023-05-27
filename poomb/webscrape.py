@@ -15,12 +15,13 @@ nest_asyncio.apply()
 bp = Blueprint('webscrape', __name__)
 api = Api(bp)
 
-@api.before_request
-def before_request():
-    g.user = session.get('user')
+
+
 
 @api.route('/webscrape')
 class WbsScrape(Resource):
+    
+    @api.doc()
     def get(self):
         async def main():
             browserObj = await launch({"headless": True}, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False, ignoreHTTPSErrors=True)
@@ -51,14 +52,15 @@ class WbsScrape(Resource):
             
             
             
-
+        
         async def run():
             extracted_data = await main()
             return(extracted_data)
-        if g.user and 'id' in g.user:
-            user_id = g.user['id']
+        if session:
+            user_id = session['user_id']
             db = get_db()
-            result = db.execute("SELECT country FROM users WHERE id = ?", (user_id)).fetchone()
+            result = db.execute("SELECT country FROM user WHERE id = ?", (user_id)).fetchone()
+            print('type:', type(result))
         
         if result:
             country = result[0]
