@@ -26,7 +26,12 @@ class WbsScrape(Resource):
         async def main():
             browserObj = await launch({"headless": True}, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False, ignoreHTTPSErrors=True)
             page = await browserObj.newPage()
-            await page.goto('https://www.openpowerlifting.org/mlist/all-portugal/2023')
+            user_id = session['user_id']
+            db = get_db()
+            
+            result = db.execute("SELECT country FROM user WHERE id = ?", (user_id,)).fetchone()
+            country = result[0]
+            await page.goto(f'https://www.openpowerlifting.org/mlist/all-{country}/2023')
 
             data = []
             rows = await page.querySelectorAll("tbody tr")
@@ -56,19 +61,9 @@ class WbsScrape(Resource):
         async def run():
             extracted_data = await main()
             return(extracted_data)
-        if session:
-            user_id = session['user_id']
-            db = get_db()
-            result = db.execute("SELECT country FROM user WHERE id = ?", (user_id)).fetchone()
-            print('type:', type(result))
         
-        if result:
-            country = result[0]
-            url = f'https://www.openpowerlifting.org/mlist/all-{country}/2023'
-            extracted_data = asyncio.run(run(url))
-            return jsonify({'data': extracted_data})
-        else:
-            return jsonify({'error': 'User not found'}) 
+        extracted_data = asyncio.run(run())
+        return jsonify({'data': extracted_data}) 
         
         
         
