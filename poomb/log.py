@@ -116,6 +116,8 @@ def performance():
         
         if len(tperformance) == 0:
             flash("No data for selected date.")
+        #if len(tdate) == '%Y-%m-%d':
+            #flash("No date provided")
         
         return render_template('log/performance.html',tperformance=tperformance)
     
