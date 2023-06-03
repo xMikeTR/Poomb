@@ -119,6 +119,8 @@ def performance():
             if len(tperformance) == 0:
              flash("No data for selected date")
         
-            return render_template('log/performance.html',tperformance=tperformance)
-    return render_template('log/performance.html')
+            return render_template('log/performance.html',tperformance=tperformance, tdate=tdate)
+    db = get_db()
+    tperformance = db.execute('SELECT * FROM log LIMIT 10').fetchall()
+    return render_template('log/performance.html', tperformance=tperformance)
 

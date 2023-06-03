@@ -29,19 +29,35 @@
             </tr>
           </thead>
           <tbody>
-            {% for row in tperformance %}
-              <tr>
-                <td>{{ row.tday }}</td>
-                <td>{{ row.exercise }}</td>
-                <td>{{ row.weight }}</td>
-                <td>{{ row.sets }}</td>
-                <td>{{ row.reps }}</td>
-                <td>
-                  <a href="{{ url_for('log.update', tid=row.tid) }}" class='btn btn-primary'>Edit</a>
-                  <a href="{{ url_for('log.delete', tid=row.tid) }}" class='btn btn-primary' onclick='return confirm("Are you sure")'>Delete</a>
-                </td>
-              </tr>
-            {% endfor %}
+            {% if tdate %}
+              {% for row in tperformance %}
+                <tr>
+                  <td>{{ row.tday }}</td>
+                  <td>{{ row.exercise }}</td>
+                  <td>{{ row.weight }}</td>
+                  <td>{{ row.sets }}</td>
+                  <td>{{ row.reps }}</td>
+                  <td>
+                    <a href="{{ url_for('log.update', tid=row.tid) }}" class='btn btn-primary'>Edit</a>
+                    <a href="{{ url_for('log.delete', tid=row.tid) }}" class='btn btn-primary' onclick='return confirm("Are you sure")'>Delete</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            {% else %}
+                {% for row in tperformance %}
+                <tr>
+                  <td>{{ row.tday }}</td>
+                  <td>{{ row.exercise }}</td>
+                  <td>{{ row.weight }}</td>
+                  <td>{{ row.sets }}</td>
+                  <td>{{ row.reps }}</td>
+                  <td>
+                    <a href="{{ url_for('log.update', tid=row.tid) }}" class='btn btn-primary'>Edit</a>
+                    <a href="{{ url_for('log.delete', tid=row.tid) }}" class='btn btn-primary' onclick='return confirm("Are you sure")'>Delete</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            {%endif%}
           </tbody>
         </table>
       {% endif %}
