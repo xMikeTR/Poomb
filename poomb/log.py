@@ -111,24 +111,14 @@ def performance():
         try:
             tdate_obj = datetime.strptime(tdate, '%Y-%m-%d')
             tdate_formatted = tdate_obj.strftime('%d-%m-%Y')
-        
-    
             db = get_db()
             tperformance = db.execute('SELECT * FROM log WHERE tday = ?', (tdate_formatted,)).fetchall()
         except ValueError:
             flash("No valid date")
-        except tperformance == 0:
-            
-            flash("No data for selected date")
-        
-        #if len(tperformance) == 0:
-            #flash("No data for selected date.")
-        #if request.form == '':
-            #flash("No date provided")
         else:
+            if len(tperformance) == 0:
+             flash("No data for selected date")
+        
             return render_template('log/performance.html',tperformance=tperformance)
-        
-        
-    
     return render_template('log/performance.html')
 
