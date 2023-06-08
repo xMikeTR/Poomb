@@ -6,7 +6,6 @@ from werkzeug.exceptions import abort
 from poomb.auth import login_required
 from poomb.db import get_db
 from datetime import datetime, timedelta
-import pandas as pd
 import plotly.graph_objs as go
 import nest_asyncio
 import json
@@ -124,3 +123,6 @@ def performance():
     tperformance = db.execute('SELECT * FROM log LIMIT 10').fetchall()
     return render_template('log/performance.html', tperformance=tperformance)
 
+@bp.route('/reset_password')
+def reset_password():
+    return render_template("resetP.html", title ="Reset request")

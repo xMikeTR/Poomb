@@ -15,6 +15,7 @@ def register():
         username = request.form['username']
         password = request.form['password']
         country = request.form['country']
+        email = request.form.get('email')
         db = get_db()
         error = None
 
@@ -22,6 +23,8 @@ def register():
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
+        elif not email:
+            error = 'Country is required'
         elif not country:
             error = 'Country is required'
 
