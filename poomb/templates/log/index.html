@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <h1>Training Log</h1>
+  <a href="{{ url_for('log.add') }}" class='btn btn-primary'>Add</a>
+  
+{% endblock %}
+
+{% block content %}
+
+<div class="grid">
+  
+    <table>
+      <caption>Recent Training</caption>
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Exercise</th>
+          <th scope="col">Weight</th>
+          <th scope="col">Sets</th>
+          <th scope="col">Reps</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in exercises %}
+          <tr>
+            <td>{{ row.tday }}</td>
+            <td>{{ row.exercise }}</td>
+            <td>{{ row.weight }}</td>
+            <td>{{ row.sets }}</td>
+            <td>{{ row.reps }}</td>
+            <td>
+              <a href="{{ url_for('log.update', tid=row.tid) }}" class='btn btn-primary'>Edit</a>
+              <a href="{{ url_for('log.delete', tid=row.tid) }}" class='btn btn-primary' onclick='return confirm("Are you sure")'>Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <table>
+      <caption>Recent Events</caption>
+      <thead>
+        <tr>
+          <th scope="col">Federation</th>
+          <th scope="col">Date</th>
+          <th scope="col">Location</th>
+          <th scope="col">Competition Name</th>
+        </tr>
+      </thead>
+      <tbody id="extracted-data">
+      </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $.ajax({
+      method: "GET",
+      url: "http://127.0.0.1:5000/api/webscrape",
+    }).done(function(response) {
+      let data = response.data;
+      for (let i = 0; i < data.length; i++) {
+        let row = "<tr>";
+        row += "<td>" + data[i]["Fed"] + "</td>"; // Display Federation value
+        row += "<td>" + data[i]["Date"] + "</td>"; // Display Date value
+        row += "<td>" + data[i]["Location"] + "</td>"; // Display Location value
+        row += "<td>" + data[i]["Competition"] + "</td>";
+        
+        row += "</tr>";
+        $("#extracted-data").append(row);
+      }
+    });
+  });
+</script>
+
+{% endblock %}
