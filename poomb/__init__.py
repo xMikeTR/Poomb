@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_mail import Mail
 
-mail = Mail()
+
 
 
 def create_app(test_config=None):
@@ -45,6 +45,6 @@ def create_app(test_config=None):
     from . import webscrape
     app.register_blueprint(webscrape.bp, url_prefix='/api')
 
-    mail.init_app(app)
+    
     
     return app
