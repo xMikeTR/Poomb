@@ -6,6 +6,8 @@ from werkzeug.exceptions import abort
 from poomb.auth import login_required
 from poomb.db import get_db
 from datetime import datetime, timedelta
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from poomb.emails import send_email
 import plotly.graph_objs as go
 import nest_asyncio
 import json
@@ -123,6 +125,17 @@ def performance():
     tperformance = db.execute('SELECT * FROM log LIMIT 10').fetchall()
     return render_template('log/performance.html', tperformance=tperformance)
 
-@bp.route('/reset_password')
+@bp.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
-    return render_template("resetP.html", title ="Reset request")
+    if request.method == 'GET':
+        return render_template('reset.html')
+
+    if request.method == 'POST':
+        db = get_db()
+
+        email = request.form.get('email')
+        check_email = db.execute('SELECT * FROM users WHERE email=?', email)
+        if email in check_email:
+            send_email(email)
+
+        return redirect(url_for('log/login.html'))
