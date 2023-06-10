@@ -1,4 +1,4 @@
-# Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
+python# Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode
 
 ### Python ###
@@ -194,3 +194,7 @@ pyrightconfig.json
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
+node_modules
+node_modules
+
+/site-packages
