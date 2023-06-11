@@ -7,7 +7,7 @@ from poomb.auth import login_required
 from poomb.db import get_db
 from datetime import datetime, timedelta
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
-from poomb.emails import send_email
+#Sfrom poomb.emails import send_email
 import plotly.graph_objs as go
 import nest_asyncio
 import json
