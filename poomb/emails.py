@@ -1,6 +1,6 @@
 from flask import render_template
 from flask_mail import Message
-from poomb import mail
+#from poomb import mail
 import os
 
 
