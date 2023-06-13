@@ -24,7 +24,7 @@ class WbsScrape(Resource):
     @api.doc()
     def get(self):
         async def main():
-            browserObj = await launch({"headless": True}, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False, ignoreHTTPSErrors=True)
+            browserObj = await launch({"headless": True, "executablePath": "chromium"}, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False, ignoreHTTPSErrors=True)
             page = await browserObj.newPage()
             user_id = session['user_id']
             db = get_db()
