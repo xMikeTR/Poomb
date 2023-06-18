@@ -28,7 +28,7 @@ $(document).ready(function() {
                       position: 'top',
                     },
                     title : {
-                      display: true,
+                      display: false,
                       text: 'Training Progression'
                     }
                   }

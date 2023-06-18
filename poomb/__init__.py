@@ -10,7 +10,7 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev',
+        SECRET_KEY='e582d3a8a64967e1231a9c462e4d90ca9e2cc00217389f593930f88e773fb048',
         DATABASE=os.path.join(app.instance_path, 'poomb.sqlite'),
     )
 

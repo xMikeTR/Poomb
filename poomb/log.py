@@ -7,6 +7,7 @@ from poomb.auth import login_required
 from poomb.db import get_db
 from datetime import datetime, timedelta
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+
 #Sfrom poomb.emails import send_email
 import plotly.graph_objs as go
 import nest_asyncio
@@ -26,8 +27,8 @@ def index():
     db = get_db()
     max_tday = db.execute('SELECT MAX(tday) FROM log').fetchone()[0]
     exercises = db.execute(
-        'SELECT * FROM log WHERE tday = ?',
-        (max_tday,)
+        'SELECT * FROM log WHERE tday = ? AND lifter_id = ?',
+        (max_tday, g.user['id'])
     ).fetchall()
     return render_template('log/index.html', exercises=exercises, tday=max_tday)
 
@@ -54,9 +55,9 @@ def add():
             db = get_db()
             for i in range(len(exercise)):
                 db.execute(
-                    'INSERT INTO log (tday, exercise, weight, sets, reps)'
-                    'VALUES (?, ?, ?, ?, ?)',
-                    (tday, exercise[i], weights[i], sets[i], reps[i])
+                    'INSERT INTO log (tday, exercise, weight, sets, reps, lifter_id)'
+                    'VALUES (?, ?, ?, ?, ?, ?)',
+                    (tday, exercise[i], weights[i], sets[i], reps[i], g.user['id'])
                 )
             db.commit()
             flash('Training')
@@ -113,7 +114,7 @@ def performance():
             tdate_obj = datetime.strptime(tdate, '%Y-%m-%d')
             tdate_formatted = tdate_obj.strftime('%d-%m-%Y')
             db = get_db()
-            tperformance = db.execute('SELECT * FROM log WHERE tday = ?', (tdate_formatted,)).fetchall()
+            tperformance = db.execute('SELECT * FROM log WHERE tday = ? AND lifter_id = ?', [(tdate_formatted, g.user['id'], )]).fetchall()
         except ValueError:
             flash("No valid date")
         else:
@@ -122,7 +123,7 @@ def performance():
         
             return render_template('log/performance.html',tperformance=tperformance, tdate=tdate)
     db = get_db()
-    tperformance = db.execute('SELECT * FROM log LIMIT 10').fetchall()
+    tperformance = db.execute('SELECT * FROM log WHERE lifter_id = ? LIMIT 10', [g.user['id']]).fetchall()
     return render_template('log/performance.html', tperformance=tperformance)
 
 @bp.route('/reset_password', methods=['GET', 'POST'])

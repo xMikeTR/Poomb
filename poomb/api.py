@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, g
 from flask_restx import Api, Resource
 from poomb.db import get_db
 from datetime import datetime
@@ -10,7 +10,7 @@ api = Api(bp)
 class LogData(Resource):
     def get(self):
         db = get_db()
-        tperformance = db.execute('SELECT * FROM log').fetchall()
+        tperformance = db.execute('SELECT * FROM log WHERE lifter_id = ?', [g.user['id']]).fetchall()
 
         data = {
             'labels': [],

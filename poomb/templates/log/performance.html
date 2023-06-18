@@ -6,13 +6,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="static/js/analytics.js"></script>
   <h1>Select a date:</h1>
-  <form method="POST" action="{{ url_for('log.performance') }}">
-    <div class="form-group">
-      <input type="date" name="tdate" id="tdate" class="form-control">
-    </div>
-    <button type="submit" class="btn btn-primary">View Day</button>
-  </form>
-
+  
+    <form method="POST" action="{{ url_for('log.performance') }}">
+      <div class="form-group">
+        <input type="date" name="tdate" id="tdate" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary">View Day</button>
+    </form>
+  
 {% endblock %}
 
 {% block content %}
