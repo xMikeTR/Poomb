@@ -1,6 +1,11 @@
 import os
 
 from flask import Flask
+from flask_jwt_extended import JWTManager
+from flask_mail import Mail
+
+jwt = JWTManager()
+mail = Mail()
 
 
 
@@ -45,6 +50,7 @@ def create_app(test_config=None):
     from . import webscrape
     app.register_blueprint(webscrape.bp, url_prefix='/api')
 
-    
+    jwt.init_app(app)
+    mail.init_app(app)
     
     return app
