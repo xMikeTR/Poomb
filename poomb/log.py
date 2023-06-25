@@ -130,60 +130,10 @@ def performance():
     tperformance = db.execute('SELECT * FROM log WHERE lifter_id = ? LIMIT 10', [g.user['id']]).fetchall()
     return render_template('log/performance.html', tperformance=tperformance)
 
-def get_user(username):
-    db = get_db()
-    user_data = db.execute("SELECT id, username, password FROM user WHERE username=?", (username,)).fetchone()
-    if user_data:
-        user_id, username, password = user_data
-        return {'id': user_id, 'username': username, 'password': password}
-
-def authenticate(username, password):
-    user = get_user(username)
-    if user and user['password'] == password:
-        return user
-
-def generate_token(user_id):
-    expires = datetime.timedelta(hours=24)
-    access_token = create_access_token(identity=user_id, expires_delta=expires)
-    return access_token
-
-@bp.route('/reset_password', methods=['GET', 'POST'])
-def reset_password():
-    if request.method == 'GET':
-        return render_template('log/reset.html')
-
-    if request.method == 'POST':
-        db = get_db()
-
-        email = request.form.get('email')
-        check_email = db.execute('SELECT * FROM user WHERE email=?', (email,))
-        if email in check_email:
-            send_email(email)
-        else:
-            flash('Email not found')
-
-        return redirect(url_for('auth.login'))
-@bp.route('/password_reset_verified/<token>', methods=['GET', 'POST'])
-def reset_verified(token):
-    db = get_db()
-
-    user = db.execute('SELECT id FROM users WHERE reset_token = ?', (token,)).fetchone()
-    if not user:
-        print('No user found')
-        return redirect(url_for('log.login.html'))
-
-    password = request.form.get('password')
-    if password:
-        db.execute('UPDATE user SET password= ? WHERE id = ?', (password, g.user['id']))
-
-        return redirect(url_for('log.login.html'))
-
-    return render_template('log/reset_verified.html')
-
 
 @bp.route("/pwresetrq", methods=["GET"])
 def pwresetrq_get():
-    return render_template('reset.html')
+    return render_template('log/reset.html')
 
 @bp.route("/pwresetrq", methods=["POST"])
 def pwresetrq_post():
@@ -214,12 +164,12 @@ def pwresetrq_post():
         ## Add Yagmail code here
         
 
-        yag = yagmail.SMTP()
-        contents = ['Please go to this URL to reset your password:', "APP URL HERE" + url_for("pwreset_get",  id = (str(key)))]
+        yag = yagmail.SMTP("miketr1990" , "ovsiphibbjisazvf")
+        contents = ['Please go to this URL to reset your password:', "127.0.0.2:500" + url_for("log.pwreset_get",  id = (str(key)))]
         yag.send(email, 'Reset your password', contents)
         flash(user[1] + ", check your email for a link to reset your password. It expires in a <amount of time here>!", "success")
         
-        return redirect(url_for("index.html"))
+        return redirect(url_for("log.index"))
     else:
         flash("Your email was never registered.", "danger")
         return redirect(url_for("pwresetrq_get"))
