@@ -10,9 +10,11 @@
     You will be sent an email that will allow you to reset your password.
   </p>
 
-  <form method="post">
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" required>
-    <input type="submit" value="Submit">
-  </form>
+  <form role="form" method="POST">
+    <div class="form-group">
+        <label for="email">What email address did you register with?</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required autocomplete="off"> 
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
 {% endblock %}

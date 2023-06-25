@@ -30,4 +30,5 @@ tqdm==4.65.0
 urllib3==1.26.16
 websockets==10.4
 Werkzeug==2.3.5
+yagmail == 0.15.293
 zipp==3.15.0

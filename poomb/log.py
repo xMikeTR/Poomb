@@ -2,6 +2,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for, session
 )
 from werkzeug.exceptions import abort
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from poomb.auth import login_required
 from poomb.db import get_db
@@ -9,10 +10,13 @@ from datetime import datetime, timedelta
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from poomb import mail
 from poomb.emails import send_email
+from poomb import keygen
 import plotly.graph_objs as go
 import nest_asyncio
 import json
 import asyncio
+import pytz
+import yagmail
 from flask import jsonify
 
 
@@ -175,3 +179,96 @@ def reset_verified(token):
         return redirect(url_for('log.login.html'))
 
     return render_template('log/reset_verified.html')
+
+
+@bp.route("/pwresetrq", methods=["GET"])
+def pwresetrq_get():
+    return render_template('reset.html')
+
+@bp.route("/pwresetrq", methods=["POST"])
+def pwresetrq_post():
+    db = get_db()
+    email = request.form["email"]
+    user = db.execute("SELECT * FROM user WHERE email=?", (email,)).fetchone()
+    
+    
+    if user:
+        pwalready = db.execute("SELECT * FROM pwreset WHERE user_id=?", (user[0],)).fetchone()
+       
+
+        # Check if user already has reset their password
+        if pwalready:
+            if not pwalready[3]:  # has_activated is False
+                db.execute("UPDATE PWReset SET datetime=?, reset_key=? WHERE user_id=?", (datetime.now(), pwalready[2], user[0]))
+                key = pwalready[2]
+            else:
+                key = keygen.make_key()
+                db.execute("UPDATE PWReset SET reset_key=?, datetime=?, has_activated=? WHERE user_id=?", (key, datetime.now(), False, user[0]))
+        else:
+            key = keygen.make_key()
+            print (type(key))
+            db.execute("INSERT INTO PWReset (reset_key, user_id) VALUES (?, ?)", (str(key,), user[0]))
+        
+        
+        
+        ## Add Yagmail code here
+        
+
+        yag = yagmail.SMTP()
+        contents = ['Please go to this URL to reset your password:', "APP URL HERE" + url_for("pwreset_get",  id = (str(key)))]
+        yag.send(email, 'Reset your password', contents)
+        flash(user[1] + ", check your email for a link to reset your password. It expires in a <amount of time here>!", "success")
+        
+        return redirect(url_for("index.html"))
+    else:
+        flash("Your email was never registered.", "danger")
+        return redirect(url_for("pwresetrq_get"))
+
+@bp.route("/pwreset/<id>", methods=["GET"])
+def pwreset_get(id):
+    db = get_db()
+    key = id
+    pwresetkey = db.execute("SELECT * FROM PWReset WHERE reset_key=?", (id,)).fetchone()
+    
+    generated_by = datetime.utcnow().replace(tzinfo=pytz.utc) - timedelta(hours=24)
+    
+    if pwresetkey[3]:  # has_activated is True
+        flash("You already reset your password with the URL you are using. If you need to reset your password again, please make a new request here.", "danger")
+        return redirect(url_for("pwresetrq_get"))
+    
+    if pwresetkey[2].replace(tzinfo=pytz.utc) < generated_by:
+        flash("Your password reset link expired. Please generate a new one here.", "danger")
+        return redirect(url_for("pwresetrq_get"))
+    
+    return render_template('reset_pw.html', id=key)
+
+@bp.route("/pwreset/<id>", methods=["POST"])
+def pwreset_post(id):
+    db = get_db()
+
+    password = request.form["password"]
+    password2 = request.form["password2"]
+    
+    if password != password2:
+        flash("Your password and password verification didn't match.", "danger")
+        return redirect(url_for("pwreset_get", id=id))
+    
+    if len(password) < 8:
+        flash("Your password needs to be at least 8 characters", "danger")
+        return redirect(url_for("pwreset_get", id=id))
+    
+    user_reset = db.execute("SELECT * FROM PWReset WHERE reset_key=?", (id,)).fetchone()
+    
+    
+    try:
+        db.execute("UPDATE User SET password=? WHERE id=?", (generate_password_hash(password), user_reset[1]))
+        
+    except Exception as e:
+        flash("Something went wrong", "danger")
+        db.rollback()
+        return redirect(url_for("index.html"))
+    
+    db.execute("UPDATE PWReset SET has_activated=? WHERE reset_key=?", (True, id))
+   
+    flash("Your new password is saved.", "success")
+    return redirect(url_for("index.html"))

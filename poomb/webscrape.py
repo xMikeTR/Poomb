@@ -51,7 +51,8 @@ class WbsScrape(Resource):
                     row_data[header_value] = column_value
 
                 data.append(row_data)
-
+                if data == "":
+                    print("No Data")
             await browserObj.close()
             return data
             
