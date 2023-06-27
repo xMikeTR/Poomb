@@ -5,6 +5,64 @@
   <h1>Training Log</h1>
   <a href="{{ url_for('log.add') }}" class='btn btn-primary'>Add</a>
   
+  <style>
+    #Barbell g{
+      animation: fadeInUp 1s;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20%);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    #svg-element g[id^='Left_Plates']{
+      transform:translateX(-100%);
+      animation: slideInLeft 8s;
+      animation-timing-function: ease;
+      animation-fill-mode: forwards;
+      animation-delay: calc(var(--animation-order) * 200ms);
+      animation-iteration-count: infinite;
+    }
+    @keyframes slideInLeft {
+      20% {
+        opacity: 0;
+        transform: translateX(-100%);
+      }
+      30%, 100% {
+        opacity:1;
+        transform: translateX(0%);
+      }
+    
+    }
+    #svg-element g[id^='Right_Plates']{
+      transform:translateX(100%);
+      animation: slideInRight 8s;
+      animation-timing-function: ease;
+      animation-fill-mode: forwards;
+      animation-delay: calc(var(--animation-order) * 100ms);
+      animation-iteration-count: infinite;
+    }
+    @keyframes slideInRight {
+      20% {
+        transform: translateX(100%);
+      }
+      30%, 100% {
+        transform: translateX(0%);
+      }
+    
+    }
+
+    
+
+    
+
+
+  </style>
+  
 {% endblock %}
 
 {% block content %}
@@ -54,7 +112,6 @@
           <td colspan="4">
             <svg id="svg-element" width="120" height="100" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="Frame 1" clip-path="url(#clip0_1_2)">
-              <rect width="120" height="100" fill="white"/>
               <g id="Barbell">
               <g id="Rectangle 1" filter="url(#filter0_d_1_2)">
               <rect x="26" y="39" width="72" height="3" fill="#121212"/>
@@ -72,14 +129,34 @@
               <rect x="100" y="39" width="17" height="3" fill="#121212"/>
               </g>
               </g>
-              <rect id="25 plate1" x="22" y="28" width="2" height="23" fill="#121212"/>
-              <rect id="75 plate 1" x="16" y="28" width="2" height="23" fill="#121212"/>
-              <rect id="75 plate 2" x="106" y="29" width="2" height="23" fill="#121212"/>
-              <rect id="100 plate 1" x="13" y="28" width="2" height="23" fill="#121212"/>
-              <rect id="100 plate 2" x="109" y="29" width="2" height="23" fill="#121212"/>
-              <rect id="50 plate 1" x="19" y="28" width="2" height="23" fill="#121212"/>
-              <rect id="50 plate 2" x="103" y="29" width="2" height="23" fill="#121212"/>
-              <rect id="25 plate 2" x="100" y="29" width="2" height="23" fill="#121212"/>
+              <g id="Left_Plates">
+              <g id="plate1" style="--animation-order:1;">
+              <rect id="plate1" x="22" y="28" width="2" height="23" fill="#121212"/>
+              </g>
+              <g id="plate5" style="--animation-order:3;">
+              <rect id="plate5" x="16" y="28" width="2" height="23" fill="#121212"/>
+              </g>
+              <g id="plate7" style="--animation-order:4;">
+              <rect id="plate7" x="13" y="28" width="2" height="23" fill="#121212"/>
+              </g>
+              <g id="plate3" style="--animation-order:2;">
+              <rect id="plate3" x="19" y="28" width="2" height="23" fill="#121212"/>
+              </g>
+              </g>
+              <g id="Right_Plates">
+              <g id="plate6" style="--animation-order:4;">
+              <rect id="plate6" x="106" y="29" width="2" height="23" fill="#121212"/>
+              </g>
+              <g id="plate8" style="--animation-order:5;">
+              <rect id="plate8" x="109" y="29" width="2" height="23" fill="#121212"/>
+              </g>
+              <g id="plate4" style="--animation-order:3;">
+              <rect id="plate4" x="103" y="29" width="2" height="23" fill="#121212"/>
+              </g>
+              <g id="plate2" style="--animation-order:1;">
+              <rect id="plate2" x="100" y="29" width="2" height="23" fill="#121212"/>
+              </g>
+              </g>
               </g>
               <defs>
               <filter id="filter0_d_1_2" x="22" y="39" width="80" height="11" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -136,7 +213,9 @@
               <rect width="120" height="100" fill="white"/>
               </clipPath>
               </defs>
-              </svg>
+            </svg>
+              
+              
               
             </div>
           </td>
