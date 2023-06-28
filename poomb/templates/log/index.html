@@ -19,12 +19,12 @@
         transform: translateY(0);
       }
     }
-    #svg-element g[id^='Left_Plates']{
+    #svg-element g[id^='plate']{
       transform:translateX(-100%);
       animation: slideInLeft 8s;
       animation-timing-function: ease;
       animation-fill-mode: forwards;
-      animation-delay: calc(var(--animation-order) * 200ms);
+      animation-delay: calc(var(--animation-order) * 300ms);
       animation-iteration-count: infinite;
     }
     @keyframes slideInLeft {
@@ -38,12 +38,12 @@
       }
     
     }
-    #svg-element g[id^='Right_Plates']{
+    #svg-element g[id^='placa']{
       transform:translateX(100%);
       animation: slideInRight 8s;
       animation-timing-function: ease;
       animation-fill-mode: forwards;
-      animation-delay: calc(var(--animation-order) * 100ms);
+      animation-delay: calc(var(--animation-order) * 300ms);
       animation-iteration-count: infinite;
     }
     @keyframes slideInRight {
@@ -54,13 +54,7 @@
         transform: translateX(0%);
       }
     
-    }
-
-    
-
-    
-
-
+    } 
   </style>
   
 {% endblock %}
@@ -110,7 +104,7 @@
       <tbody id="extracted-data">
         <tr>
           <td colspan="4">
-            <svg id="svg-element" width="120" height="100" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg id="svg-element" reserveAspectRatio="xMidYMid meet" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="Frame 1" clip-path="url(#clip0_1_2)">
               <g id="Barbell">
               <g id="Rectangle 1" filter="url(#filter0_d_1_2)">
@@ -144,16 +138,16 @@
               </g>
               </g>
               <g id="Right_Plates">
-              <g id="plate6" style="--animation-order:4;">
+              <g id="placa6" style="--animation-order:3;">
               <rect id="plate6" x="106" y="29" width="2" height="23" fill="#121212"/>
               </g>
-              <g id="plate8" style="--animation-order:5;">
+              <g id="placa8" style="--animation-order:4;">
               <rect id="plate8" x="109" y="29" width="2" height="23" fill="#121212"/>
               </g>
-              <g id="plate4" style="--animation-order:3;">
+              <g id="placa4" style="--animation-order:2;">
               <rect id="plate4" x="103" y="29" width="2" height="23" fill="#121212"/>
               </g>
-              <g id="plate2" style="--animation-order:1;">
+              <g id="placa2" style="--animation-order:1;">
               <rect id="plate2" x="100" y="29" width="2" height="23" fill="#121212"/>
               </g>
               </g>
