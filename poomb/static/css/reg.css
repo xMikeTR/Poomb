@@ -1,0 +1,110 @@
+body {
+  background-color: #000000;
+  font-family: 'Noto Sans';
+  margin: 0;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  background-image: url('../barbellgym.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  max-width: 800px;
+  background-color: rgba(255, 255, 255, 0.753);
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.image-container {
+  position: relative;
+  width: 500px;
+  height: 100px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.about-text {
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 5px;
+  padding: 20px;
+  text-align: justify;
+}
+
+.form-container {
+  display: grid;
+}
+
+.form-container h2 {
+  text-align: center;
+}
+
+.form-container label,
+.form-container input[type="text"],
+.form-container input[type="password"] {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form-container input[type="submit"] {
+  background-color: #000000;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .navbar {
+    bottom: 0;
+    width: 100vw;
+    height: 5rem;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .navbar-nav {
+    flex-direction: row;
+  }
+
+  .nav-link {
+    justify-content: center;
+  }
+
+  main {
+    margin: 0;
+  }
+}
+
+/* Large screens */
+@media only screen and (min-width: 600px) {
+  .navbar {
+    top: 0;
+    width: 5rem;
+    height: 100vh;
+  }
+
+  .navbar:hover {
+    width: 16rem;
+  }
+
+  .navbar:hover .link-text {
+    display: inline;
+  }
+
+  .navbar:hover .logo svg {
+    margin-left: 11rem;
+  }
+
+  .navbar:hover .logo-text {
+    left: 0px;
+  }
+}
