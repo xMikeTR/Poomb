@@ -13,21 +13,26 @@ body {
 
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-auto-rows: repeat(auto-fit, minmax(240px, 1fr));
+  place-items: center;
   max-width: 800px;
   background-color: rgba(255, 255, 255, 0.753);
-  border-radius: 5px;
   padding: 20px;
 }
 
 .image-container {
-  position: relative;
-  width: 220px;
-  height: 120px;
+  display:flex;
+  justify-content: center;
+  width: 280px;
+  height: 520px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.about-text h2 {
+  text-align: center;
 }
 
 .about-text {
