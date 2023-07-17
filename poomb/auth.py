@@ -28,17 +28,17 @@ def register():
         elif not country:
             error = 'Country is required'
 
-            if error is None:
-                try:
-                    db.execute(
-                        "INSERT INTO user (username, password, email, country) VALUES (?, ?, ?, ?)",
-                        (username, generate_password_hash(password), email, country),
-                    )
-                    db.commit()
-                except db.IntegrityError:
-                    error = f"User {username} is already registered."
-                else:
-                    return redirect(url_for("auth.login"))
+        if error is None:
+            try:
+                db.execute(
+                    "INSERT INTO user (username, password, email, country) VALUES (?, ?, ?, ?)",
+                    (username, generate_password_hash(password), email, country),
+                )
+                db.commit()
+            except db.IntegrityError:
+                error = f"User {username} is already registered."
+            else:
+                return redirect(url_for("auth.login"))
 
         flash(error)
 

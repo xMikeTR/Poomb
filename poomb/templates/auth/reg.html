@@ -456,7 +456,7 @@
     </div>
     <div class="form-container">
       <h2>Registration</h2>
-      <form>
+      <form action="/auth/register" method="POST">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
         
@@ -564,5 +564,14 @@
       svg2.style.opacity = 1;
     });
   </script>
+   <section class="content">
+    <header>
+      {% block header %}{% endblock %}
+    </header>
+    {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </section>
 </body>
 </html>
