@@ -49,7 +49,7 @@ def add():
         
         for i in range(len(exercise)):
             if not exercise[i]:
-                error = 'Exercise is required for all entries.'
+                flash('Exercise is required for all entries.')
                 break
         
         if error is not None:
