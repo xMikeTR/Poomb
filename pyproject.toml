@@ -50,3 +50,4 @@ testpaths = ["tests"]
 [tool.coverage.run]
 branch = true
 source = ["poomb"]
+
