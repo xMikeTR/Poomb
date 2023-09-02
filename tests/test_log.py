@@ -3,6 +3,7 @@ import pytest
 from poomb.db import get_db
 from poomb.log import performance
 import requests
+from unittest import mock
 
 
 
@@ -168,7 +169,7 @@ def test_training_shows(client, auth, app, path):
 ))
 
 
-def test_pwreset(client, path, auth, app):
+def test_pwreset(client, path, app):
     with app.app_context():
         response = client.get(path)
         assert response.status_code == 200
@@ -179,7 +180,7 @@ def test_pwreset(client, path, auth, app):
 ))
 
 
-def test_pwresetpost(client,app, mail, mock):
+def test_pwresetpost(app, mail, mock):
     with mock.patch('api.app.db') as mockdb:
         mockdb.add = mock.MagicMock(return_value="your desired return value")
         result = app.add_word('shivam')
