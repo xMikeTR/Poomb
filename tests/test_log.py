@@ -175,21 +175,27 @@ def test_pwreset(client, path, app):
         response = client.get(path)
         assert response.status_code == 200
 
+@pytest.mark.parametrize('path', (
+    
+    '/pwresetrq',
+))
 
-def test_pwresetrq_post(client):
+
+def test_pwresetrq_post(client,path, app):
     # Mock the database interaction
-    with patch('poomb.get_db') as mock_get_db:
+    with patch('poomb.db.get_db') as mock_get_db:
         db_mock = Mock()
         mock_get_db.return_value = db_mock
         
         # Mock the email sending
-        with patch('poomb.yagmail.SMTP') as mock_smtp:
+        with patch('yagmail.SMTP') as mock_smtp_class:
             smtp_mock = Mock()
-            mock_smtp.return_value = smtp_mock
+            mock_smtp = Mock(return_value=smtp_mock)
+            mock_smtp_class.return_value = mock_smtp
             
             # Simulate a POST request to the pwresetrq route with a valid email
-            with client.app.app_context():
-                response = client.post('/pwresetrq', data={'email': 'test@test.com'})
+            with app.app_context():
+                response = client.post(path, data={'email': 'test@test.com'})
 
             # Check the response status code
                 assert response.status_code == 200
