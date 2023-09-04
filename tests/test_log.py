@@ -3,8 +3,8 @@ import pytest
 from poomb.db import get_db
 from poomb.log import performance
 import requests
-from unittest import mock
-from poomb import pwresetrq_post
+from unittest.mock import patch, Mock
+from poomb.log import pwresetrq_post
 
 
 
@@ -175,14 +175,23 @@ def test_pwreset(client, path, app):
         response = client.get(path)
         assert response.status_code == 200
 
-@pytest.mark.parametrize('mail', (
-    
-    'test@example.com',
-))
 
+def test_pwresetrq_post(client):
+    # Mock the database interaction
+    with patch('poomb.get_db') as mock_get_db:
+        db_mock = Mock()
+        mock_get_db.return_value = db_mock
+        
+        # Mock the email sending
+        with patch('poomb.yagmail.SMTP') as mock_smtp:
+            smtp_mock = Mock()
+            mock_smtp.return_value = smtp_mock
+            
+            # Simulate a POST request to the pwresetrq route with a valid email
+            with client.app.app_context():
+                response = client.post('/pwresetrq', data={'email': 'test@test.com'})
 
-def test_pwresetpost(app, mail, mock):
-    with mock.patch('data.sql.db') as mockdb:
-        mockdb.add = mock.MagicMock(return_value=mail)
-        result = pwresetrq_post(mail)
-    print(result)
+            # Check the response status code
+                assert response.status_code == 200
+
+            
