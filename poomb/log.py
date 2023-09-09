@@ -156,7 +156,7 @@ def pwresetrq_post():
                 db.execute("UPDATE PWReset SET reset_key=?, datetime=?, has_activated=? WHERE user_id=?", (key, datetime.now(), False, user[0]))
         else:
             key = keygen.make_key()
-            print (type(key))
+            
             db.execute("INSERT INTO PWReset (reset_key, user_id) VALUES (?, ?)", (str(key,), user[0]))
         
         
@@ -172,7 +172,7 @@ def pwresetrq_post():
         return redirect(url_for("log.index"))
     else:
         flash("Your email was never registered.", "danger")
-        return redirect(url_for("pwresetrq_get"))
+        return redirect(url_for("log.pwresetrq_get"))
 
 @bp.route("/pwreset/<id>", methods=["GET"])
 def pwreset_get(id):

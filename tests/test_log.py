@@ -5,6 +5,8 @@ from poomb.log import performance
 import requests
 from unittest.mock import patch, Mock
 from poomb.log import pwresetrq_post
+import datetime
+import pytz
 
 
 
@@ -183,21 +185,19 @@ def test_pwreset(client, path, app):
 
 def test_pwresetrq_post(client,path, app):
     # Mock the database interaction
-    with patch('poomb.db.get_db') as mock_get_db:
-        db_mock = Mock()
-        mock_get_db.return_value = db_mock
-        
-        # Mock the email sending
-        with patch('yagmail.SMTP') as mock_smtp_class:
-            smtp_mock = Mock()
-            mock_smtp = Mock(return_value=smtp_mock)
-            mock_smtp_class.return_value = mock_smtp
+    
             
             # Simulate a POST request to the pwresetrq route with a valid email
             with app.app_context():
-                response = client.post(path, data={'email': 'test@test.com'})
+                response = client.post('/pwresetrq', data={'email': 'test@test.com'}, follow_redirects=True)
 
             # Check the response status code
                 assert response.status_code == 200
 
-            
+
+
+
+def test_pwreset_get(client, app):
+    with app.app_context():
+        response = client.post('/pwreset/1', 'resetkey')
+        assert response.status_code == 200

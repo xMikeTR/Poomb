@@ -7,3 +7,8 @@ VALUES
 INSERT INTO log (tid, lifter_id, tday, exercise, weight, sets ,reps)
 VALUES
   (1, 1,'04-04-2023', 'Squat', '100', '5', '5');
+
+INSERT into pwreset(id, reset_key, user_id, datetime, has_activated)
+VALUES
+(1, 'resetresetreset', 1, '2023-09-09', 0)
+ 
