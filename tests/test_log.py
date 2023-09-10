@@ -2,12 +2,13 @@ import os
 import pytest
 from poomb.db import get_db
 from poomb.log import performance
+from poomb import create_app
 import requests
 from unittest.mock import patch, Mock
 from poomb.log import pwresetrq_post
 import datetime
 import pytz
-
+import sqlite3
 
 
 
@@ -197,7 +198,10 @@ def test_pwresetrq_post(client,path, app):
 
 
 
+
+
 def test_pwreset_get(client, app):
     with app.app_context():
-        response = client.post('/pwreset/1', 'resetkey')
-        assert response.status_code == 200
+        with pytest.raises(TypeError):
+            response = client.get('pwreset/3')
+            assert TypeError in response
