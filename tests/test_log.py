@@ -1,6 +1,6 @@
 import os
 import pytest
-from poomb.db import get_db
+from poomb.db import get_db, init_db
 from poomb.log import performance
 from poomb import create_app
 import requests
@@ -205,3 +205,45 @@ def test_pwreset_get(client, app):
         with pytest.raises(TypeError):
             response = client.get('pwreset/3')
             assert TypeError in response
+
+
+import unittest
+
+
+from flask import Flask
+import tempfile
+import os
+import sqlite3
+
+class PasswordResetTest(unittest.TestCase):
+
+    def setUp(self):
+        # Create a temporary SQLite database for testing
+        self.db_fd, self.db_path = tempfile.mkstemp()
+        self.app = create_app({"TESTING": True, "DATABASE": self.db_path})
+        self.client = self.app.test_client()
+        with self.app.app_context():
+            init_db()
+
+    def tearDown(self):
+        os.close(self.db_fd)
+        os.unlink(self.db_path)
+
+    def test_password_reset(self):
+        # Create a test user and reset record in the database
+        with self.app.app_context():
+            db = sqlite3.connect(self.db_path)
+            db.execute("INSERT INTO User (username, password, email, country) VALUES (?, ?, ?, ?)", ("test_user", "hashed_password", "test@test.com", "argentina"))
+            db.execute("INSERT INTO PWReset (reset_key, user_id, has_activated) VALUES (?, ?, ?)", ("test_key", 1, False))
+            db.commit()
+        
+        # Simulate a POST request to the password reset route
+        response = self.client.post("/pwreset/1", data={"password": "new_password", "password2": "new_password"})
+        
+        # Assert that the response is as expected
+        self.assertEqual(response.status_code, 302)  # Check if the response is a redirect
+        #self.assertIn(b"Your new password is saved.", response.data)  # Check if the success flash message is present
+        self.assertEqual(response.headers['Location'], '/')
+        
+        
+        # You can add more assertions to test other scenarios

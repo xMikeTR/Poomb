@@ -216,7 +216,7 @@ def pwreset_post(id):
     except Exception as e:
         flash("Something went wrong", "danger")
         db.rollback()
-        return redirect(url_for("index.html"))
+        return redirect(url_for("index"))
     
     db.execute("UPDATE PWReset SET has_activated=? WHERE reset_key=?", (True, id))
    
