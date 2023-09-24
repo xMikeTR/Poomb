@@ -116,19 +116,20 @@ def performance():
         tdate = request.form['tdate']
         try:
             tdate_obj = datetime.strptime(tdate, '%Y-%m-%d')
-            tdate_formatted = tdate_obj.strftime('%d-%m-%Y')
             db = get_db()
-            tperformance = db.execute('SELECT * FROM log WHERE tday = ? AND lifter_id = ?', [(tdate_formatted, g.user['id'], )]).fetchall()
+            tperformance = db.execute('SELECT * FROM log WHERE tday = ? AND lifter_id = ? ORDER BY tday DESC', [tdate_obj.strftime('%d-%m-%Y'), g.user['id']]).fetchall()
         except ValueError:
             flash("No valid date")
         else:
             if len(tperformance) == 0:
-             flash("No data for selected date")
+                flash("No data for selected date")
         
-            return render_template('log/performance.html',tperformance=tperformance, tdate=tdate)
+            return render_template('log/performance.html', tperformance=tperformance, tdate=tdate)
+    
     db = get_db()
-    tperformance = db.execute('SELECT * FROM log WHERE lifter_id = ? LIMIT 10', [g.user['id']]).fetchall()
+    tperformance = db.execute('SELECT * FROM log WHERE lifter_id = ? ORDER BY tday DESC LIMIT 10', [g.user['id']]).fetchall()
     return render_template('log/performance.html', tperformance=tperformance)
+
 
 
 @bp.route("/pwresetrq", methods=["GET"])

@@ -7,7 +7,7 @@ $(document).ready(function() {
           var labels = response.labels;
           var datasets = response.datasets;
 
-          labels = labels.reverse();
+          labels = labels;
           datasets = datasets.reverse();
 
           // Prepare data for the chart
