@@ -1,12 +1,8 @@
-<h1 align="center">
-  <a href="https://github.com/xMikeTR/poomb">
-    <!-- Please provide path to your logo here -->
-    <img src="docs/images/logo.svg" alt="Logo" width="100" height="100">
-  </a>
+<h1>
+  Poomb
 </h1>
 
 <div align="center">
-  Poomb
   <br />
   <a href="#about"><strong>Explore the screenshots »</strong></a>
   <br />
@@ -51,13 +47,27 @@
 ---
 
 ## About
+#### Video Demo:  <URL HERE>
 
-> **[?]**
-> Provide general information about your project here.
-> What problem does it (intend to) solve?
-> What is the purpose of your project?
-> Why did you undertake it?
-> You don't have to answer all the questions -- just the ones relevant to your project.
+> Poomb is a webapp tailored for weightlifters.
+> It allows you to track and analyze your performance, workout by workout,
+> In so doing through visualizations so you can truly see your progress
+> This was done so we can have better control of our targets.
+
+To achieve this, various features were created, from your basic CRUD functions that allow you to insert, update and update your training log listed in log.py,
+the file also contains functions for the password reset, and displaying your overall performance.
+
+To protect users and have general security, auth.py was created, it is responsible for authorization functions, not allowing one to see other user's information
+
+Stored as displayed in db.py
+
+To assist with this functionality, api.py was created to grab information from the database itself, this was done due to the views returning information, this was so we could return from the database.
+Also useful to this would be any events that occurred and you'd like to be updated, that's where webscrape.py comes in.
+By using beautiful soup and asyncio, this grabs information from the powerlifting website and displays according to user country.
+
+
+As another helper file, emails.py and keygen,py were created for the password reset functions respectively
+
 
 <details>
 <summary>Screenshots</summary>
@@ -68,26 +78,27 @@
 
 |                               Home Page                               |                               Login Page                               |
 | :-------------------------------------------------------------------: | :--------------------------------------------------------------------: |
-| <img src="docs/images/screenshot.png" title="Home Page" width="100%"> | <img src="docs/images/screenshot.png" title="Login Page" width="100%"> |
+| <img src="/home/mike/Pictures/Screenshots/home.png" title="Home Page" width="100%"> | <img src="docs/images/screenshot.png" title="Login Page" width="100%"> |
 
 </details>
 
 ### Built With
 
-> **[?]**
-> Please provide the technologies that are used in the project.
+
+> Flask
+> ChartJS
 
 ## Getting Started
 
 ### Prerequisites
 
-> **[?]**
-> What are the project requirements/dependencies?
+
+> If any mod is to be done, please setup your virtual environment with venv.
 
 ### Installation
 
-> **[?]**
-> Describe how to install and get started with the project.
+
+> In order to install, after cloning the repo, pip install -r requirements.txt should allow you to install all the necessary libraries
 
 ## Usage
 
