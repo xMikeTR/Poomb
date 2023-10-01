@@ -47,7 +47,7 @@
 ---
 
 ## About
-#### Video Demo:  <URL HERE>
+#### Video Demo:  <https://youtu.be/xFlV1g4JAkU>
 
 > Poomb is a webapp tailored for weightlifters.
 > It allows you to track and analyze your performance, workout by workout,
