@@ -73,8 +73,7 @@ As another helper file, emails.py and keygen,py were created for the password re
 <summary>Screenshots</summary>
 <br>
 
-> **[?]**
-> Please provide your screenshots here.
+
 
 |                               Home Page                               |                               Login Page                               |
 | :-------------------------------------------------------------------: | :--------------------------------------------------------------------: |
@@ -100,11 +99,7 @@ As another helper file, emails.py and keygen,py were created for the password re
 
 > In order to install, after cloning the repo, pip install -r requirements.txt should allow you to install all the necessary libraries
 
-## Usage
 
-> **[?]**
-> How does one go about using it?
-> Provide various use cases and code examples here.
 
 ## Roadmap
 
@@ -116,8 +111,7 @@ See the [open issues](https://github.com/xMikeTR/poomb/issues) for a list of pro
 
 ## Support
 
-> **[?]**
-> Provide additional ways to contact the project maintainer/maintainers.
+> miketr1990@gmail.com
 
 Reach out to the maintainer at one of the following places:
 
@@ -162,6 +156,4 @@ See [LICENSE](LICENSE) for more information.
 
 ## Acknowledgements
 
-> **[?]**
-> If your work was funded by any organization or institution, acknowledge their support here.
-> In addition, if your work relies on other software libraries, or was inspired by looking at other work, it is appropriate to acknowledge this intellectual debt too.
+> CS50 Course for inspiring this project
