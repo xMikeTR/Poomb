@@ -54,7 +54,7 @@
 > In so doing through visualizations so you can truly see your progress
 > This was done so we can have better control of our targets.
 
-To achieve this, various features were created, from your basic CRUD functions that allow you to insert, update and update your training log listed in log.py,
+To achieve this, various features were created, from your basic CRUD functions that allow you to insert, update and delete your training log listed in log.py,
 the file also contains functions for the password reset, and displaying your overall performance.
 
 To protect users and have general security, auth.py was created, it is responsible for authorization functions, not allowing one to see other user's information
